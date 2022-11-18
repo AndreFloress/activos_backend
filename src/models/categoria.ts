@@ -1,24 +1,32 @@
 import { Model , Table , DataType , Column } from "sequelize-typescript"
+import * as Sequelize from "sequelize-typescript"
+import Conexion from "../database/conexion"
 
+const conn = new Conexion();
 
-//Se tiene que extender a Model para que pueda crear la tabla en postgre
-@Table({
-    tableName : 'categoria'
-})
-export class Categoria extends Model{
-    
-    @Column({
-        type : DataType.INTEGER,
-        primaryKey : true, 
-        autoIncrement : true,
-    })
-    public id : number ;
-
-    @Column({
-        type : DataType.STRING(50),
-        allowNull : false,
-        unique : true
-    })
-    public name : string
-
+//Se crea la tabla en la base de datos 
+export interface CategoriaAddModel{
+    id : number,
+    name : string
 }
+
+//Interface donde mapear la indromacion desde Insomnia o un api
+export interface CategoriaModel extends Sequelize.Model<CategoriaModel , CategoriaAddModel>{
+    id : number,
+    name : string ,
+    createdAt : Date ,
+    updatedAt : Date 
+}
+
+export const categoria = conn.conexion.define<CategoriaModel , CategoriaAddModel>('categorias' , {
+    id : {
+        type : Sequelize.DataType.INTEGER,
+        primaryKey : true,
+        autoIncrement : true,
+
+    },
+    name : {
+        type : Sequelize.DataType.STRING(50),
+        unique : true
+    }
+})

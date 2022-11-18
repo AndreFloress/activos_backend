@@ -1,13 +1,26 @@
-import express  from 'express';
+import express , {json}  from 'express';
 import Conexion from './database/conexion';
+import { CategoriaController } from './controllers/categoria.controller';
+
 class App{
 
     public express: express.Application;
     private  conexion : Conexion | undefined
+    categoriacontroller : CategoriaController
 
     constructor(){
         this.express = express();
         this.db();
+        this.middlewares();
+        this.routes();
+    }
+
+    middlewares(){
+        this.express.use(json())
+    }
+
+    routes(){
+        this.express.get('/api' , this.categoriacontroller.router)
     }
 
     db(){
