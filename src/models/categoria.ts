@@ -1,8 +1,6 @@
-import { Model , Table , DataType , Column } from "sequelize-typescript"
 import * as Sequelize from "sequelize-typescript"
-import Conexion from "../database/conexion"
+import {conn} from "../database/conexion"
 
-const conn = new Conexion();
 
 //Se crea la tabla en la base de datos 
 export interface CategoriaAddModel{
@@ -18,7 +16,7 @@ export interface CategoriaModel extends Sequelize.Model<CategoriaModel , Categor
     updatedAt : Date 
 }
 
-export const categoria = conn.conexion.define<CategoriaModel , CategoriaAddModel>('categorias' , {
+export const categoria = conn.define<CategoriaModel , CategoriaAddModel>('categorias' , {
     id : {
         type : Sequelize.DataType.INTEGER,
         primaryKey : true,
