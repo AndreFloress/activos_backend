@@ -4,6 +4,7 @@ import { Router , Request , Response} from "express";
 import { CategoriaCreate } from "../dtos/categoria-create.dtos";
 import { CategoriaUpdate } from "../dtos/categoria-update.dtos";
 import categoriaService from "../services/categoria.service";
+import { ResponseDto } from "../common/dto/response.dto";
 
 
 export class CategoriaController{
@@ -25,8 +26,8 @@ export class CategoriaController{
 
     //Funciones de Lista
     async getList(req : Request , res : Response) : Promise<Response>{
-        const categoria = await categoriaService.getList();
-        return res.json(categoria)
+        const responsedto = await categoriaService.getList();
+        return res.status(responsedto.code).json(responsedto)
     }
 
     async getCategoria(req : Request , res : Response) : Promise<Response>{
@@ -37,6 +38,7 @@ export class CategoriaController{
     }
 
     async create(req : Request , res : Response) : Promise<Response>{
+        
         const payload = req.body
         
         let categoriacreatedto = plainToClass(CategoriaCreate , payload)
@@ -51,7 +53,9 @@ export class CategoriaController{
             })
         }
 
-        return res.json(await categoriaService.create(categoriacreatedto));
+        const responsedto = await categoriaService.create(categoriacreatedto);
+        
+        return res.status(responsedto.code).json(responsedto)
     }
 
     async update(req : Request , res : Response) : Promise<Response>{

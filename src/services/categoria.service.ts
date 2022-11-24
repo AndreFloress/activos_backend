@@ -1,12 +1,31 @@
+import { ResponseDto } from "../common/dto/response.dto";
 import { CategoriaCreate } from "../dtos/categoria-create.dtos";
 import { CategoriaUpdate } from "../dtos/categoria-update.dtos";
 import { categoria } from "../models/categoria";
 
 class CategoriaServices{
 
+    private responsedto : ResponseDto;
+
     public async getList(){
-        const categoriaDb = await categoria.findAll({});
-        return categoriaDb;
+
+        this.responsedto = new ResponseDto();
+
+        try {
+        
+        this.responsedto.data = await categoria.findAll({});
+        this.responsedto.code = 200;
+        this.responsedto.message = 'Listado de categoria'
+        return this.responsedto;
+
+        } catch (error) {
+
+        this.responsedto.code = 500;
+        this.responsedto.message = 'Error interno, revisar los logs'
+        return this.responsedto;
+
+        }
+        
     }
 
     public async getCategoria(id : number){
@@ -15,9 +34,22 @@ class CategoriaServices{
     }
 
     public async create(categoriacreatedto : CategoriaCreate){
-        const categoriacreate = await categoria.create(categoriacreatedto)
+        this.responsedto = new ResponseDto();
+        
+        try {
 
-        return categoriacreate;
+        this.responsedto.data = await categoria.create(categoriacreatedto)
+        this.responsedto.code = 201;
+        this.responsedto.message = 'Categoria creada correctamente'
+        return this.responsedto;
+        
+        } catch (error) {
+
+        this.responsedto.code = 500;
+        this.responsedto.message = 'Error al crear la categoria'
+        return this.responsedto;
+        }
+
     }
 
     public async update(updatecategoriadto : CategoriaUpdate , id : number){
