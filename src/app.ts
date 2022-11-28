@@ -14,8 +14,7 @@ class App{
 
     constructor(){
         this.express = express();
-        this.dbCategoria();
-        this.dbUsuario();
+        this.db();
         this.middlewares();
         this.controller();
         this.routes();
@@ -30,12 +29,13 @@ class App{
         this.express.use('/api' , this.usuariocontroller.router)
     }
 
-    dbCategoria(){
+    db(){
         conn
         .sync()
         .then(() => {
             categoria.sync
-            console.log('Database is connected Categoria')
+            usuario.sync
+            console.log('Database is connected')
         })
         .catch((err) => {
             console.log(`Erro`, err);
@@ -43,18 +43,6 @@ class App{
         
     }
 
-    dbUsuario(){
-        conn
-        .sync()
-        .then(() => {
-            usuario.sync
-            console.log('Database is connected Usuario')
-        })
-        .catch((err) => {
-            console.log(`Erro`, err);
-        });
-        
-    }
 
     listen(port: number){
         this.express.listen(port, () => console.log(`Server running in: http:localhost: ${port}`));

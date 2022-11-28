@@ -32,13 +32,15 @@ export class CategoriaController{
 
     async getCategoria(req : Request , res : Response) : Promise<Response>{
         const {id} = req.params;
-        const categoria = await categoriaService.getCategoria(+id);
-        return res.json(categoria)
+        const responsedto = await categoriaService.getCategoria(+id);
+        return res.status(responsedto.code).json({
+            message :  responsedto.message,
+            data : responsedto.data
+        })
 
     }
 
     async create(req : Request , res : Response) : Promise<Response>{
-        
         const payload = req.body
         
         let categoriacreatedto = plainToClass(CategoriaCreate , payload)
@@ -55,6 +57,7 @@ export class CategoriaController{
 
         const responsedto = await categoriaService.create(categoriacreatedto);
         
+
         return res.status(responsedto.code).json(responsedto)
     }
 

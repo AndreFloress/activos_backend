@@ -1,7 +1,6 @@
 import * as  Sequelize  from "sequelize-typescript";
 import { conn } from "../database/conexion";
 
-
 export interface UsuarioAddModel{
     id: number,
     user:string,
@@ -25,16 +24,17 @@ export const usuario = conn.define<UsuarioModel , UsuarioAddModel>('usuarios' , 
     },
     user : {
         type : Sequelize.DataType.STRING(15),
-        unique : true,
+        unique : false,
 
     },
     password : {
         type : Sequelize.DataType.STRING(20),
-        unique : true,
+        unique : false,
     },
     rol : {
         type : Sequelize.DataType.STRING(30),
-        unique : true,
+        unique : false,
 
     }
-})
+});
+

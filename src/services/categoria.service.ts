@@ -29,8 +29,22 @@ class CategoriaServices{
     }
 
     public async getCategoria(id : number){
+
+        this.responsedto = new ResponseDto();
+
         const categoriaDb = await categoria.findOne({ where : {id} })
-        return categoriaDb;
+
+        if(!categoriaDb){
+            this.responsedto.message = `Categoria ${id} no fue encontrada`;
+            this.responsedto.code = 404;
+            return this.responsedto;
+        
+        }
+
+        this.responsedto.message = '';
+        this.responsedto.code = 200;
+        this.responsedto.data = categoriaDb;
+        return this.responsedto;
     }
 
     public async create(categoriacreatedto : CategoriaCreate){
@@ -48,11 +62,13 @@ class CategoriaServices{
         this.responsedto.code = 500;
         this.responsedto.message = 'Error al crear la categoria'
         return this.responsedto;
+        
         }
 
     }
 
     public async update(updatecategoriadto : CategoriaUpdate , id : number){
+
         const categoria =  await this.getCategoria(id)
 
         if(!categoria){
@@ -64,7 +80,7 @@ class CategoriaServices{
             ...CategoriaCreate
         }
 
-        const refresh = await categoria.update(categoriaupdate , { where : {id}})
+    //    const refresh = await categoria.update(categoriaupdate , { where : {id}})
 
         return this.getCategoria(id)
 
